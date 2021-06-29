@@ -6,42 +6,60 @@ const {
 describe('node-quill-converter', () => {
   it('convertTextToDelta', () => {
     let text = 'hello, world';
-    let deltaExpected = {ops: [{insert: 'hello, world\n'}]};
+    let deltaExpected = { ops: [{ insert: 'hello, world\n' }] };
 
     let deltaResult = convertTextToDelta(text);
 
     expect(deltaResult).toEqual(deltaExpected);
   });
 
-  it('convertHtmlToDelta', () => {
-    let html = `<p>hello, <strong>world</strong></p>`;
-    let deltaExpected = {
-      ops:[
+  it('convertHtmlToDelta', async () => {
+    const html = `<ol><li>asdad</li><li>asdad</li><li>asdasd</li></ol>`;
+    const deltaExpected = {
+      "ops": [
         {
-          insert: "hello, "
+          "insert": "asdad"
         },
         {
-          insert:"world",
-          attributes: {
-            bold: true
-          }
+          "attributes": {
+            "list": "ordered"
+          },
+          "insert": "\n"
+        },
+        {
+          "insert": "asdad"
+        },
+        {
+          "attributes": {
+            "list": "ordered"
+          },
+          "insert": "\n"
+        },
+        {
+          "insert": "asdasd"
+        },
+        {
+          "attributes": {
+            "list": "ordered"
+          },
+          "insert": "\n"
         }
       ]
     };
-    
-    let deltaResult = convertHtmlToDelta(html);
+
+    const deltaResult = await convertHtmlToDelta(html);
 
     expect(deltaResult).toEqual(deltaExpected);
   });
 
   it('convertHtmlToDelta', () => {
     let delta = {
-      ops:[
+      ops: [
         {
           insert: "hello, "
         },
         {
-          insert:"world",
+          insert: "world",
           attributes: {
             bold: true
           }
